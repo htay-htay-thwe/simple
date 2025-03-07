@@ -1,41 +1,48 @@
 pipeline {
     agent {
-        label 'DevServer'
+        label 'DevServer'  // Ensure this matches the label of your Jenkins agent
     }
     tools {
-        maven 'mymaven'
+        maven 'mymaven'  // Ensure 'mymaven' matches the tool configured in Jenkins
     }
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package'  // Run Maven clean and package command
             }
             post {
                 success {
-                     archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true
+                     archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true  // Archive the WAR file after success
                 }
             }
         }
-    //  stage('Test') {
-    //     steps {
-    //         echo "this is test stage "
-    //          sh 'mvn test'
-    //     }
-    //     post {
-    //         always {
-    //             junit 'target/surefire-reports/*.xml'
-    //         }
-    //     }
-    // }
-    // stage('deploy') {
-    //     steps {
-    //        echo "this is deploy stage"
-    //     }
-    // }
-    // stage('Deliver') {
-    //     steps {
-    //         sh './jenkins/scripts/deliver.sh'
-    //     }
-    // }
+        
+        // Uncomment the following sections if you want to include these stages
+        /*
+        stage('Test') {
+            steps {
+                echo "This is the test stage"
+                sh 'mvn test'  // Run tests
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'  // Archive test results (if present)
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "This is the deploy stage"
+                // Add deploy commands here
+            }
+        }
+
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'  // Execute the deliver script
+            }
+        }
+        */
     }
 }
