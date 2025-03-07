@@ -1,0 +1,41 @@
+pipeline {
+    agent {
+        label 'DevServer'
+    }
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                     archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true
+                }
+            }
+        }
+    //  stage('Test') {
+    //     steps {
+    //         echo "this is test stage "
+    //          sh 'mvn test'
+    //     }
+    //     post {
+    //         always {
+    //             junit 'target/surefire-reports/*.xml'
+    //         }
+    //     }
+    // }
+    // stage('deploy') {
+    //     steps {
+    //        echo "this is deploy stage"
+    //     }
+    // }
+    // stage('Deliver') {
+    //     steps {
+    //         sh './jenkins/scripts/deliver.sh'
+    //     }
+    // }
+    }
+}
